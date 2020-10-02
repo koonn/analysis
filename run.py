@@ -1,9 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from .model_nn import ModelNN
-from .model_xgb import ModelXGB
-from .runner import Runner
+from src import Runner, ModelNN, ModelXGB
 
 
 if __name__ == '__main__':
