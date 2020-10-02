@@ -120,3 +120,19 @@ class Logger:
     @staticmethod
     def to_ltsv(dic):
         return '\t'.join(['{}:{}'.format(key, value) for key, value in dic.items()])
+
+
+class Submission:
+    """結果を書き出すクラスメソッド
+
+    TODO:
+        書き直す
+    """
+
+    @classmethod
+    def create_submission(cls, run_name):
+        submission = pd.read_csv('../input/sampleSubmission.csv')
+        pred = Util.load(f'../model/pred/{run_name}-test.pkl')
+        for i in range(pred.shape[1]):
+            submission[f'Class_{i + 1}'] = pred[:, i]
+        submission.to_csv(f'../submission/{run_name}.csv', index=False)
