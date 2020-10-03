@@ -1,3 +1,6 @@
+"""何らかの数値を以上スコアに変換する関数
+
+"""
 import numpy as np
 import pandas as pd
 
