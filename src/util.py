@@ -125,7 +125,7 @@ class Logger:
 class Submission:
     """結果を書き出すクラス
 
-    TODO:
+    Todos:
         サンプルでない実装をする
     """
 

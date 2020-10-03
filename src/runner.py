@@ -42,7 +42,7 @@ class Runner:
             Tuple[Model, Optional[np.array], Optional[np.array], Optional[float]]:
                 （モデルのインスタンス、バリデーションデータのインデックス、バリデーションデータの予測値、評価関数によるスコア）のタプル
 
-        Todo:
+        Todos:
             - バリデーションしない時には'all'とするのはなんか変な気がするので、Noneとかに直す
             - 評価関数も選択できるようにする
         """
