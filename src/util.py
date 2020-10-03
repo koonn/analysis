@@ -123,10 +123,10 @@ class Logger:
 
 
 class Submission:
-    """結果を書き出すクラスメソッド
+    """結果を書き出すクラス
 
     TODO:
-        書き直す
+        サンプルでない実装をする
     """
 
     @classmethod
