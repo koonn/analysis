@@ -1,40 +1,40 @@
 src
 ===
 
-src.func_util
-=============
+calc_score
+==========
 
-.. automodule:: src.func_util
+.. automodule:: src.calc_score
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.metrics
-===========
+metrics
+=======
 
 .. automodule:: src.metrics
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.model
-=========
+model
+=====
 
 .. automodule:: src.model
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.runner
-==========
+runner
+======
 
 .. automodule:: src.runner
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.util
-========
+util
+====
 
 .. automodule:: src.util
    :members:
