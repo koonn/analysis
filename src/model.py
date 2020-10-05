@@ -1,10 +1,9 @@
 import pandas as pd
-import numpy as np
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class Model(metaclass=ABCMeta):
+class AbsModel(metaclass=ABCMeta):
     """Modelクラス
 
     学習・予測・モデルの保存。読み込みなどを行う
@@ -12,7 +11,7 @@ class Model(metaclass=ABCMeta):
     Attributes:
         run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
         params(dict): ハイパーパラメータ
-        model(None): モデル
+        model(AbsModel): 初期値はNoneで、train後にモデルを保持するのに使う
 
     """
     def __init__(self, run_fold_name, params):
@@ -47,14 +46,17 @@ class Model(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def predict(self, test_x):
+    def predict(self, array_x):
         """学習済のモデルでの予測値を返す
 
         Args:
-            test_x(pd.DataFrame): バリデーションデータやテストデータの特徴量
+            array_x(pd.DataFrame): バリデーションデータやテストデータの特徴量
 
         Returns:
             np.array: 予測値
+
+        Notes:
+            0〜1の予測確率を返すこと
 
         """
         pass

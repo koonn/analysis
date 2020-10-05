@@ -1,10 +1,23 @@
 import numpy as np
 import pandas as pd
 
-from src import Runner, ModelNN, ModelXGB
+from src import ModelNN, ModelXGB, ModelLogisticRegression
+from src.util import Util
+from src import RunSettings
+from src import KaggleFeaturesRunner
 
 
 if __name__ == '__main__':
+
+    # lrのハイパーパラメータ設定
+    params_lr = {
+        'penalty': 'l2',
+        'C': 1.0,
+        'class_weight': 'balanced',
+        'random_state': 2018,
+        'solver': 'liblinear',
+        'n_jobs': 1,
+    }
 
     # XGBoostのハイパーパラメータ設定
     params_xgb = {
@@ -36,17 +49,29 @@ if __name__ == '__main__':
     }
 
     # 特徴量の指定
-    features = [f'feat_{i}' for i in range(1, 94)]
+    run_settings_kagglebook = RunSettings(
+        file_path_train=Util.script_based_path('../data/features/train.csv'),
+        file_path_test=Util.script_based_path('../data/features/test.csv'),
+        model_dir=Util.script_based_path('../model/model/lr/'),
+        target=['target'],
+        features=[f'feat_{i}' for i in range(1, 94)],
+        features_to_scale=[f'feat_{i}' for i in range(1, 94)],
+        )
+
+    # LogisticRegressionによる学習・予測
+    runner = KaggleFeaturesRunner('lr1', ModelLogisticRegression, params_lr, run_settings_kagglebook, n_fold=2)
+    runner.run_train_cv()
+    #runner.run_predict_cv()
 
     # xgboostによる学習・予測
-    runner = Runner('xgb1', ModelXGB, features, params_xgb)
-    runner.run_train_cv()
-    runner.run_predict_cv()
+    #runner = Runner('xgb1', ModelXGB, features, params_xgb)
+    #runner.run_train_cv()
+    #runner.run_predict_cv()
 
     # ニューラルネットによる学習・予測
-    runner = Runner('nn1', ModelNN, features, params_nn)
-    runner.run_train_cv()
-    runner.run_predict_cv()
+    #runner = Runner('nn1', ModelNN, features, params_nn)
+    #runner.run_train_cv()
+    #runner.run_predict_cv()
 
     '''
     # (参考）xgboostによる学習・予測 - 学習データ全体を使う場合
