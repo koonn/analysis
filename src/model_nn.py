@@ -6,7 +6,7 @@ from keras.models import Sequential, load_model
 from keras.utils import np_utils
 from sklearn.preprocessing import StandardScaler
 
-from .model import Model
+from .model import AbsModel
 from .util import Util
 
 import os
@@ -17,14 +17,21 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
-class ModelNN(Model):
+class ModelNN(AbsModel):
+    """NNのモデルクラス
+
+        Attributes:
+            run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+            params(dict): ハイパーパラメータ
+            model(Model): 初期値はNoneで、train後に学習済みモデルを保持するのに使う
+            scaler(Model): 初期値はNoneで、train後に学習済みscalerを保持するのに使う
+    """
 
     def __init__(self, run_fold_name, params):
         super().__init__(run_fold_name, params)
         self.scaler = None
 
     def train(self, tr_x, tr_y, va_x=None, va_y=None):
-
         # データのセット・スケーリング
         validation = va_x is not None
         scaler = StandardScaler()
@@ -85,6 +92,7 @@ class ModelNN(Model):
 
         # モデル・スケーラーの保持
         self.model = model
+        self.scaler = scaler
 
     def predict(self, te_x):
         te_x = self.scaler.transform(te_x)

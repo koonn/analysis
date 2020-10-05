@@ -1,3 +1,6 @@
+"""指標可視化用のクラスを定義したモジュール
+
+"""
 from itertools import product
 
 import matplotlib.pyplot as plt

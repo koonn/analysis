@@ -2,11 +2,11 @@ import os
 
 import xgboost as xgb
 
-from .model import Model
+from .model import AbsModel
 from .util import Util
 
 
-class ModelXGB(Model):
+class ModelXGB(AbsModel):
     """XGBoostのモデルクラス
 
     XGBoostの学習・予測・モデルの保存・読み込みなどを行うクラス
@@ -32,19 +32,16 @@ class ModelXGB(Model):
         # validationデータがあるかどうか。valid_xがNoneでないならTrue
         has_validation_data = (valid_x is not None)
 
-        # 学習データをDMatrix形式に変換
-        d_train = xgb.DMatrix(train_x, label=train_y)
-
-        # バリデーションデータがあれば、バリデーションデータをDMatrix形式に変換
-        if has_validation_data:
-            d_valid = xgb.DMatrix(valid_x, label=valid_y)
-
         # ハイパーパラメータの設定
         params = dict(self.params)
         num_round = params.pop('num_round')
 
-        # 学習
+        # 学習データをDMatrix形式に変換
+        d_train = xgb.DMatrix(train_x, label=train_y)
+
         if has_validation_data:
+            # バリデーションデータがあれば、バリデーションデータもDMatrix形式に変換
+            d_valid = xgb.DMatrix(valid_x, label=valid_y)
 
             # バリデーション時のみのハイパーパラメータの設定
             early_stopping_rounds = params.pop('early_stopping_rounds')
@@ -67,18 +64,18 @@ class ModelXGB(Model):
                                    evals=watchlist
                                    )
 
-    def predict(self, test_x):
-        """テストデータに対する予測を行う関数
+    def predict(self, array_x):
+        """予測確率を行う関数
 
         Args:
-            test_x(array-like shape of [n_samples, n_features]): テストデータの特徴量
+            array_x(array-like shape of [n_samples, n_features]): 予測をしたい対象の特徴量
 
         Returns:
             np.array(shape of [n_samples, ]): 予測値
 
         """
-        d_test = xgb.DMatrix(test_x)
-        return self.model.predict(d_test, ntree_limit=self.model.best_ntree_limit)
+        d_x = xgb.DMatrix(array_x)
+        return self.model.predict(d_x, ntree_limit=self.model.best_ntree_limit)
 
     def save_model(self):
         """モデルを保存する関数

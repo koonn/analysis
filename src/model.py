@@ -1,12 +1,15 @@
+"""学習・予測・モデルの保存・読み込みなどを行う抽象クラス
+
+"""
 import pandas as pd
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
 class AbsModel(metaclass=ABCMeta):
-    """Modelクラス
+    """抽象Modelクラス
 
-    学習・予測・モデルの保存。読み込みなどを行う
+    学習・予測・モデルの保存・読み込みなどを行う
 
     Attributes:
         run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
