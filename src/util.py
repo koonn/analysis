@@ -11,7 +11,7 @@ class Util:
     """ファイルの入出力などのユーティリティメソッド"""
 
     @classmethod
-    def convert_script_based_relative_path(cls, relative_path):
+    def script_based_path(cls, relative_path):
         """実行ファイル基準の相対パスを、絶対パスに変換する関数
 
         読み込みファイルを、実行ファイルからの相対パスで指定(スクリプトの実行場所によらず読み込めるようにするため)
@@ -22,7 +22,7 @@ class Util:
             relative_path: 実行ファイルからの相対パス
 
         Returns:
-            実行ファイルからの相対パスで指定した場所の絶対パス
+            str: 実行ファイルからの相対パスで指定した場所の絶対パス
 
         """
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -75,8 +75,8 @@ class Logger:
         self.general_logger = logging.getLogger('general')
         self.result_logger = logging.getLogger('result')
         stream_handler = logging.StreamHandler()
-        file_general_handler = logging.FileHandler(Util.convert_script_based_relative_path('../model/general.log'))
-        file_result_handler = logging.FileHandler(Util.convert_script_based_relative_path('../model/result.log'))
+        file_general_handler = logging.FileHandler(Util.script_based_path('../model/general.log'))
+        file_result_handler = logging.FileHandler(Util.script_based_path('../model/result.log'))
         if len(self.general_logger.handlers) == 0:
             self.general_logger.addHandler(stream_handler)
             self.general_logger.addHandler(file_general_handler)
@@ -95,12 +95,12 @@ class Logger:
     def result_ltsv(self, dic):
         self.result(self.to_ltsv(dic))
 
-    def result_scores(self, run_name, scores):
+    def result_scores(self, run_name, cv_scores):
         """計算結果をコンソールと計算結果用ログに出力
 
         Args:
             run_name(str): 実行の名前
-            scores(np.array): スコア
+            cv_scores(np.array): スコア
 
         Returns:
             None
@@ -108,8 +108,8 @@ class Logger:
         """
         dic = dict()
         dic['name'] = run_name
-        dic['score'] = np.mean(scores)
-        for i, score in enumerate(scores):
+        dic['average_score'] = np.mean(cv_scores)
+        for i, score in enumerate(cv_scores):
             dic[f'score{i}'] = score
         self.result(self.to_ltsv(dic))
 
