@@ -197,7 +197,7 @@ class Metrics:
             cmap='Blues',
             ax=ax,
             xticks_rotation='horizontal',
-            values_format=None,
+            values_format='d',
         )
 
         ax.set_title(f'Confusion Matrix: Pos_decision_threshold={threshold}')
@@ -258,9 +258,15 @@ class Metrics:
                            color=text_color,
                            )
 
-        # そのほかの描画設定
-        fig.colorbar(im_, ax=ax)
+        # カラーバーの描画設定
+        cax = fig.add_axes([ax.get_position().x1+0.01,
+                            ax.get_position().y0,
+                            0.02,
+                            ax.get_position().height,
+                            ])
+        fig.colorbar(im_, cax=cax)
 
+        # そのほかの描画設定
         ax.set_xticks(np.arange(3))
         ax.set_xticklabels(['Precision', 'Recall', 'F1-score'])
 
@@ -272,5 +278,3 @@ class Metrics:
         ax.set_xlabel('Measures')
         ax.set_ylabel('True label')
         ax.set_title(f'Classification report: Pos_decision_threshold={threshold} \n Accuracy={acc:.2f}')
-
-        fig.tight_layout()
