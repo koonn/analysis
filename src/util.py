@@ -71,28 +71,61 @@ class Logger:
     """ログの出力・表示を行う"""
 
     def __init__(self):
-
+        # ロガーのインスタンス化
         self.general_logger = logging.getLogger('general')
         self.result_logger = logging.getLogger('result')
+
+        # ストリームハンドラインスタンスの作成(コンソールに出力するためのハンドラ)
         stream_handler = logging.StreamHandler()
+
+        # ファイルハンドラクラスのインスタンスを作成(指定されたファイルをオープンしてファイルにログを出力するためのハンドラ)
         file_general_handler = logging.FileHandler(Util.script_based_path('../model/general.log'))
         file_result_handler = logging.FileHandler(Util.script_based_path('../model/result.log'))
+
+        # ロガーにハンドラが設定されていない場合は、ハンドラを追加する
         if len(self.general_logger.handlers) == 0:
+
+            # general_loggerのログをコンソールとファイルに出力するためのハンドラ設定
             self.general_logger.addHandler(stream_handler)
             self.general_logger.addHandler(file_general_handler)
             self.general_logger.setLevel(logging.INFO)
+
+            # result_loggerのログをコンソールとファイルに出力するためのハンドラ設定
             self.result_logger.addHandler(stream_handler)
             self.result_logger.addHandler(file_result_handler)
             self.result_logger.setLevel(logging.INFO)
 
     def info(self, message):
-        """時刻をつけてコンソールとログに出力"""
-        self.general_logger.info('[{}] - {}'.format(self.now_string(), message))
+        """時刻をつけてメッセージをコンソールとログに出力する関数
+
+        Args:
+            message:
+
+        Returns:
+
+        """
+        self.general_logger.info(f'[{self.now_string()}] - {message}')
 
     def result(self, message):
+        """メッセージをコンソールとログに出力する関数
+
+        Args:
+            message:
+
+        Returns:
+
+        """
         self.result_logger.info(message)
 
     def result_ltsv(self, dic):
+        """
+
+        Args:
+            dic:
+
+        Returns:
+
+        """
         self.result(self.to_ltsv(dic))
 
     def result_scores(self, run_name, cv_scores):
@@ -115,10 +148,25 @@ class Logger:
 
     @staticmethod
     def now_string():
+        """実行時の時刻を文字列で返す関数
+
+        Returns:
+            str: 関数の実行時の時刻の文字列
+
+        """
         return str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
     @staticmethod
     def to_ltsv(dic):
+        """引数の辞書の各要素をタブ区切りの文字列で返す関数
+
+        Args:
+            dic: 辞書
+
+        Returns:
+            str: 辞書の各要素をタブ区切りにした文字列
+
+        """
         return '\t'.join(['{}:{}'.format(key, value) for key, value in dic.items()])
 
 
@@ -127,6 +175,7 @@ class Submission:
 
     Todos:
         サンプルでない実装をする
+
     """
 
     @classmethod
