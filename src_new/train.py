@@ -1,15 +1,16 @@
+import argparse
 import os
 import joblib
 import pandas as pd
 from sklearn import metrics
-from sklearn import tree
 
 import config
+import model_dispatcher
 
 
-def run(fold):
+def run(fold, model):
     # 学習データの読み込み
-    df = pd.read_csv(config.TRAINING_FILE)
+    df = pd.read_csv(config.TRAINING_FOLD_FILE)
 
     # 学習データとバリデーションデータに分割
     df_train = df[df.kfold != fold].reset_index(drop=True)
@@ -23,7 +24,7 @@ def run(fold):
     y_valid = df_valid['target'].values
 
     # モデルの作成
-    clf = tree.DecisionTreeClassifier()
+    clf = model_dispatcher.models[model]
     clf.fit(x_train, y_train)
 
     # バリデーションデータに対する予測
@@ -34,12 +35,12 @@ def run(fold):
     print(f'Fold={fold}, Accuracy={accuracy}')
 
     # モデルの保存
-    joblib.dump(clf, os.path.join(config.MODEL_OUTPUT_DIR, f'../new_model/dt_{fold}.pkl'))
+    joblib.dump(clf, os.path.join(config.MODEL_OUTPUT_DIR, f'dt_{fold}.pkl'))
 
 
 if __name__ == '__main__':
-    run(fold=0)
-    run(fold=1)
-    run(fold=2)
-    run(fold=3)
-    run(fold=4)
+    run(fold=0, model='logistic_regression')
+    run(fold=1, model='logistic_regression')
+    run(fold=2, model='logistic_regression')
+    run(fold=3, model='logistic_regression')
+    run(fold=4, model='logistic_regression')

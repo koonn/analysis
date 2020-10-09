@@ -1,7 +1,8 @@
+"""fold番号がついたトレインデータを作成する変数"""
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 
-from func_util import script_based_path
+import config
 
 
 def create_folds(n_folds=5):
@@ -15,7 +16,7 @@ def create_folds(n_folds=5):
 
     """
     # foldのないトレインデータの読み込み
-    df = pd.read_csv(script_based_path('../data/features/train.csv'))
+    df = pd.read_csv(config.TRAINING_FILE)
 
     y_train = df['target']
     x_train = df.drop('target', axis=1)
@@ -31,7 +32,7 @@ def create_folds(n_folds=5):
         df.loc[cv_index, 'kfold'] = str(i)
 
     # ファイルを書き出す
-    df.to_csv(script_based_path('../data/features/train_folds.csv'), index=False)
+    df.to_csv(config.TRAINING_FOLD_FILE, index=False)
 
 
 if __name__ == '__main__':
