@@ -39,8 +39,23 @@ def run(fold, model):
 
 
 if __name__ == '__main__':
-    run(fold=0, model='logistic_regression')
-    run(fold=1, model='logistic_regression')
-    run(fold=2, model='logistic_regression')
-    run(fold=3, model='logistic_regression')
-    run(fold=4, model='logistic_regression')
+    # ArgumentParserインスタンスの作成
+    parser = argparse.ArgumentParser()
+
+    # コマンドラインから受け取る引数の設定
+    parser.add_argument(
+        '--fold',
+        type=int,
+    )
+    parser.add_argument(
+        '--model',
+        type=str,
+    )
+
+    # コマンドラインに入力された引数を受け取ってargsに格納
+    args = parser.parse_args()
+
+    # 学習の実行
+    run(fold=args.fold,
+        model=args.model,
+        )
