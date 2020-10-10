@@ -8,11 +8,13 @@ Attributes：
     models(dict): モデル名をkey、モデルインスタンスをvalueとした辞書
 
 """
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
+from models import (
+    ModelXgb,
+    ModelRandomForestClassifier,
+    ModelDecisionTreeClassifier,
+    ModelLogisticRegression,
+    )
 
-from models import ModelXgb
 
 # XGBoostのハイパーパラメータ設定
 params_xgb = {
@@ -26,21 +28,25 @@ params_xgb = {
     'colsample_bytree': 0.8,
     'silent': 1,
     'random_state': 71,
-    'num_round': 2000,  # 10000
+    'num_round': 200,  # 10000
     'early_stopping_rounds': 10,
 }
 
 # モデルディスパッチャ
 
 models = {
-    'decision_tree_gini': DecisionTreeClassifier(
-        criterion='gini',
+    'decision_tree_gini': ModelDecisionTreeClassifier(
+        params={'criterion': 'gini'},
     ),
-    'decision_tree_entropy': DecisionTreeClassifier(
-        criterion='entropy',
+    'decision_tree_entropy': ModelDecisionTreeClassifier(
+        params={'criterion': 'entropy'},
     ),
-    'logistic_regression': LogisticRegression(),
-    'random_forest': RandomForestClassifier(),
+    'logistic_regression': ModelLogisticRegression(
+        params={'n_jobs': -2},
+    ),
+    'random_forest': ModelRandomForestClassifier(
+        params={'n_jobs': -2},
+    ),
     'xgboost': ModelXgb(
         params=params_xgb,
     ),

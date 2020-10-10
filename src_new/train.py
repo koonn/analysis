@@ -28,25 +28,26 @@ def run(fold, model):
     df_valid = df[df.kfold == fold].reset_index(drop=True).drop('kfold', axis=1)
 
     # 学習データとバリデーションデータをそれぞれ目的変数と説明変数に分ける
-    x_train = df_train.drop(config.TARGET_COLUMN, axis=1).values
-    y_train = df_train[config.TARGET_COLUMN].values
+    x_train = df_train.drop(config.TARGET_COLUMN, axis=1)
+    y_train = df_train[config.TARGET_COLUMN]
 
-    x_valid = df_valid.drop(config.TARGET_COLUMN, axis=1).values
-    y_valid = df_valid[config.TARGET_COLUMN].values
+    x_valid = df_valid.drop(config.TARGET_COLUMN, axis=1)
+    y_valid = df_valid[config.TARGET_COLUMN]
 
     # モデルの作成
     clf = model_dispatcher.models[model]
-    clf.fit(x_train, y_train)
+    clf.train(x_train, y_train, x_valid, y_valid)
 
     # バリデーションデータに対する予測
     pred_valid = clf.predict(x_valid)
 
     # 指標の計算
-    accuracy = metrics.accuracy_score(y_valid, pred_valid)
-    print(f'Fold={fold}, Accuracy={accuracy}')
+    #accuracy = metrics.accuracy_score(y_valid, pred_valid)
+    #print(f'Fold={fold}, Accuracy={accuracy}')
 
     # モデルの保存
-    joblib.dump(clf, os.path.join(config.MODEL_OUTPUT_DIR, f'dt_{fold}.pkl'))
+    clf.save_model()
+    # joblib.dump(clf, os.path.join(config.MODEL_OUTPUT_DIR, f'dt_{fold}.pkl'))
 
 
 if __name__ == '__main__':
