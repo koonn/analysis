@@ -17,7 +17,7 @@ from util import script_based_path
 # ----------------
 
 # モデルの保存先ディレクトリ
-MODEL_OUTPUT_DIR = script_based_path('../new_model/')
+MODEL_OUTPUT_DIR = script_based_path('../model/')
 
 # ---------
 # データの設定
