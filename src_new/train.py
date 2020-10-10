@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import argparse
 import os
 import joblib
@@ -9,19 +10,29 @@ import model_dispatcher
 
 
 def run(fold, model):
+    """
+
+    Args:
+        fold(int): 使用するfold番号の指定
+        model: 使用するモデルの指定
+
+    Returns:
+        foldは学習データのkfoldカラムの値を使用している
+
+    """
     # 学習データの読み込み
     df = pd.read_csv(config.TRAINING_FOLD_FILE)
 
-    # 学習データとバリデーションデータに分割
-    df_train = df[df.kfold != fold].reset_index(drop=True)
-    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # 学習データとバリデーションデータに分割して、k_foldカラムを除く
+    df_train = df[df.kfold != fold].reset_index(drop=True).drop('kfold', axis=1)
+    df_valid = df[df.kfold == fold].reset_index(drop=True).drop('kfold', axis=1)
 
     # 学習データとバリデーションデータをそれぞれ目的変数と説明変数に分ける
-    x_train = df_train.drop('target', axis=1).values
-    y_train = df_train['target'].values
+    x_train = df_train.drop(config.TARGET_COLUMN, axis=1).values
+    y_train = df_train[config.TARGET_COLUMN].values
 
-    x_valid = df_valid.drop('target', axis=1).values
-    y_valid = df_valid['target'].values
+    x_valid = df_valid.drop(config.TARGET_COLUMN, axis=1).values
+    y_valid = df_valid[config.TARGET_COLUMN].values
 
     # モデルの作成
     clf = model_dispatcher.models[model]

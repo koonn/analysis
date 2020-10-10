@@ -1,6 +1,20 @@
-"""学習の実行時の設定を記載するモジュール"""
+# -*- coding: utf-8 -*-
+"""学習の実行時の設定
+
+実行の設定を記載したモジュール
+
+Attributes:
+    TRAINING_FILE(str): もともとの学習データ
+    TRAINING_FOLD_FILE(str): 交差検証用のfoldカラムを追加した学習データ
+    MODEL_OUTPUT_DIR(str): モデルの格納先ディレクトリ
+    TARGET_COLUMN(str): 目的変数のカラム名
+
+"""
 from func_util import script_based_path
 
+# --------
+# パスの設定
+# --------
 
 # 学習データファイル
 TRAINING_FILE = script_based_path('../data/features/train.csv')
@@ -10,3 +24,10 @@ TRAINING_FOLD_FILE = script_based_path('../data/features/train_folds.csv')
 
 # モデルの保存先ディレクトリ
 MODEL_OUTPUT_DIR = script_based_path('../new_model/')
+
+# ---------
+# データの設定
+# ---------
+
+# targetカラムの名前
+TARGET_COLUMN = 'target'
