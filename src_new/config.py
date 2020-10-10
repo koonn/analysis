@@ -12,9 +12,16 @@ Attributes:
 """
 from func_util import script_based_path
 
-# --------
-# パスの設定
-# --------
+# ----------------
+# モデルの保存先の設定
+# ----------------
+
+# モデルの保存先ディレクトリ
+MODEL_OUTPUT_DIR = script_based_path('../new_model/')
+
+# ---------
+# データの設定
+# ---------
 
 # 学習データファイル
 # TRAINING_FILE = script_based_path('../data/features/train.csv')
@@ -23,13 +30,6 @@ TRAINING_FILE = script_based_path('../data/credit_card_data/train.csv')
 # CV用学習データファイル
 # TRAINING_FOLD_FILE = script_based_path('../data/features/train_folds.csv')
 TRAINING_FOLD_FILE = script_based_path('../data/credit_card_data/train_folds.csv')
-
-# モデルの保存先ディレクトリ
-MODEL_OUTPUT_DIR = script_based_path('../new_model/')
-
-# ---------
-# データの設定
-# ---------
 
 # targetカラムの名前
 # TARGET_COLUMN = 'target'
