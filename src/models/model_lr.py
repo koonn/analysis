@@ -60,16 +60,17 @@ class ModelLogisticRegression(AbsModel):
         self.scaler = scaler
 
     def predict(self, x):
-        """予測確率を算出する関数"""
+        """ラベルが1である予測確率を算出する関数"""
         x = self.scaler.transform(x)
         pred = self.model.predict_proba(x)
-        return pred
+
+        return pred[:, 1]
 
     def save_model(self):
         """モデルを保存する関数"""
         # パスの設定
         model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'lr')
-        model_path = os.path.join(model_dir, f'{self.run_name}-model.pkl')
+        model_path = os.path.join(model_dir, f'{self.run_name}-model_archived.pkl')
         scaler_path = os.path.join(model_dir, f'{self.run_name}-scaler.pkl')
 
         # 保存先のディレクトリがなければ作成

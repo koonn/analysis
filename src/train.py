@@ -4,6 +4,7 @@ import pandas as pd
 
 import config
 import model_dispatcher
+from metrics.metrics import acc
 
 
 def run(fold, model):
@@ -42,8 +43,8 @@ def run(fold, model):
     pred_valid = clf.predict(x_valid)
 
     # 指標の計算
-    #accuracy = metrics.accuracy_score(y_valid, pred_valid)
-    #print(f'Fold={fold}, Accuracy={accuracy}')
+    accuracy = acc(y_valid, pred_valid)
+    print(f'Fold={fold}, Accuracy={accuracy:.5f}')
 
     # モデルの保存
     clf.run_name = run_name

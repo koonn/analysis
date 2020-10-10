@@ -48,10 +48,11 @@ class ModelXgb(AbsModel):
                                )
 
     def predict(self, x):
-        """予測確率をの算出を行う関数"""
+        """ラベルが1である予測確率をの算出を行う関数"""
         d_x = xgb.DMatrix(x)
+        pred = self.model.predict(d_x, ntree_limit=self.model.best_ntree_limit)
 
-        return self.model.predict(d_x, ntree_limit=self.model.best_ntree_limit)
+        return pred[:, 1]
 
     def save_model(self):
         """モデルを保存する関数"""

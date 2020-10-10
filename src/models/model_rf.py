@@ -36,10 +36,10 @@ class ModelRandomForestClassifier(AbsModel):
         self.model = model
 
     def predict(self, x):
-        """予測確率を算出する関数"""
+        """ラベルが1である予測確率を算出する関数"""
         pred_proba = self.model.predict_proba(x)
 
-        return pred_proba
+        return pred_proba[:, 1]
 
     def save_model(self):
         """モデルを保存する関数"""
