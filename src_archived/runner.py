@@ -159,7 +159,7 @@ class AbsRunner(metaclass=ABCMeta):
 
         # 予測結果の保存
         Util.dump(predictions_based_on_kfolds,
-                  Util.script_based_path(f'../model/pred/{self.run_name}-train.pkl')
+                  Util.script_based_path(f'../model_archived/pred/{self.run_name}-train.pkl')
                   )
 
         # 結果まとめをログに出力
@@ -201,7 +201,7 @@ class AbsRunner(metaclass=ABCMeta):
 
         # 予測結果の保存
         Util.dump(avg_test_pred,
-                  Util.script_based_path(f'../model/pred/{self.run_name}-tests.pkl')
+                  Util.script_based_path(f'../model_archived/pred/{self.run_name}-tests.pkl')
                   )
 
         logger.info(f'{self.run_name} - end prediction cv')
@@ -244,7 +244,7 @@ class AbsRunner(metaclass=ABCMeta):
 
         # 予測結果の保存
         Util.dump(pred,
-                  Util.script_based_path(f'../model/pred/{self.run_name}-tests.pkl')
+                  Util.script_based_path(f'../model_archived/pred/{self.run_name}-tests.pkl')
                   )
 
         logger.info(f'{self.run_name} - end prediction all')

@@ -52,7 +52,7 @@ if __name__ == '__main__':
     run_settings_kagglebook = RunSettings(
         file_path_train=Util.script_based_path('../data/features/train.csv'),
         file_path_test=Util.script_based_path('../data/features/test.csv'),
-        model_dir=Util.script_based_path('../model/model/lr/'),
+        model_dir=Util.script_based_path('../model_archived/model/lr/'),
         target=['target'],
         features=[f'feat_{i}' for i in range(1, 94)],
         features_to_scale=[f'feat_{i}' for i in range(1, 94)],

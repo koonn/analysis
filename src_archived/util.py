@@ -79,8 +79,8 @@ class Logger:
         stream_handler = logging.StreamHandler()
 
         # ファイルハンドラクラスのインスタンスを作成(指定されたファイルをオープンしてファイルにログを出力するためのハンドラ)
-        file_general_handler = logging.FileHandler(Util.script_based_path('../model/general.log'))
-        file_result_handler = logging.FileHandler(Util.script_based_path('../model/result.log'))
+        file_general_handler = logging.FileHandler(Util.script_based_path('../model_archived/general.log'))
+        file_result_handler = logging.FileHandler(Util.script_based_path('../model_archived/result.log'))
 
         # ロガーにハンドラが設定されていない場合は、ハンドラを追加する
         if len(self.general_logger.handlers) == 0:
@@ -181,7 +181,7 @@ class Submission:
     @classmethod
     def create_submission(cls, run_name):
         submission = pd.read_csv('../input/sampleSubmission.csv')
-        pred = Util.load(f'../model/pred/{run_name}-test.pkl')
+        pred = Util.load(f'../model_archived/pred/{run_name}-test.pkl')
         for i in range(pred.shape[1]):
             submission[f'Class_{i + 1}'] = pred[:, i]
         submission.to_csv(f'../submission/{run_name}.csv', index=False)

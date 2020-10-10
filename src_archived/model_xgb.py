@@ -84,7 +84,7 @@ class ModelXGB(AbsModel):
             None
 
         """
-        model_path = os.path.join('../model/model', f'{self.run_fold_name}.model')
+        model_path = os.path.join('../model_archived/model', f'{self.run_fold_name}.model_archived')
         os.makedirs(os.path.dirname(model_path), exist_ok=True)
         # best_ntree_limitが消えるのを防ぐため、pickleで保存することとした
         Util.dump(self.model, model_path)
@@ -96,5 +96,5 @@ class ModelXGB(AbsModel):
             None
 
         """
-        model_path = os.path.join('../model/model', f'{self.run_fold_name}.model')
+        model_path = os.path.join('../model_archived/model', f'{self.run_fold_name}.model_archived')
         self.model = Util.load(model_path)
