@@ -18,8 +18,8 @@ def create_folds(n_folds=5):
     # foldのないトレインデータの読み込み
     df = pd.read_csv(config.TRAINING_FILE)
 
-    y_train = df['target']
-    x_train = df.drop('target', axis=1)
+    y_train = df[config.TARGET_COLUMN]
+    x_train = df.drop(config.TARGET_COLUMN, axis=1)
 
     # k分割考査検証法で分割するためのインスタンス作成
     k_fold = StratifiedKFold(n_splits=n_folds,
