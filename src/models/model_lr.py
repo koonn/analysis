@@ -81,5 +81,10 @@ class ModelLogisticRegression(AbsModel):
         joblib.dump(self.scaler, scaler_path)
 
     def load_model(self):
-        """モデルを作成する関数"""
-        pass
+        """モデルを読み込む関数"""
+        model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'lr')
+        model_path = os.path.join(model_dir, f'{self.run_name}-model_archived.pkl')
+        scaler_path = os.path.join(model_dir, f'{self.run_name}-scaler.pkl')
+
+        self.model = joblib.load(model_path)
+        self.scaler = joblib.load(scaler_path)

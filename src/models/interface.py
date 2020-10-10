@@ -5,9 +5,13 @@ Notes:
     AbsModel：　学習・予測・モデルの保存・読み込み機能を持ったモデルクラスを作るための抽象クラス
 
 """
+import os
+import joblib
 import pandas as pd
 from abc import ABCMeta, abstractmethod
 from typing import Optional
+
+import config
 
 
 class AbsModel(metaclass=ABCMeta):
@@ -19,7 +23,7 @@ class AbsModel(metaclass=ABCMeta):
     Attributes:
         run_name(str): 実行の名前とfoldの番号を組み合わせた名前
         params(dict): ハイパーパラメータ
-        model(AbsModel): 初期値はNoneで、train後にモデルを保持するのに使う
+        model(Model): 初期値はNoneで、train後にモデルを保持するのに使う
 
     """
     def __init__(self, params):
@@ -74,3 +78,45 @@ class AbsModel(metaclass=ABCMeta):
         pass
 
 
+class BaseSklearnModel(AbsModel):
+    """Sklearnのモデルを使ったときのBaseModelクラス
+
+    学習・予測・モデルの保存・読み込み機能を持ったモデルクラスを作るためのベースクラス
+    Sklearnの分類クラス単体を使うのであればこれを継承すれば楽
+
+    Attributes:
+        run_name(str): 実行の名前とfoldの番号を組み合わせた名前
+        params(dict): ハイパーパラメータ
+        model(Model): モデルのインスタンス
+        _model_class(ModelClass): モデルクラス
+
+    """
+    def __init__(self, params):
+        """コンストラクタ"""
+        super().__init__(params)
+        self._model_class = None  # モデルインスタンスとは別なのでmodelとは別にしている
+
+    def train(self, train_x, train_y, valid_x=None, valid_y=None):
+        """モデルの学習を行う関数"""
+        # モデルの構築・訓練
+        model = self._model_class(**self.params)
+        model.fit(train_x, train_y)
+
+        # モデルを保持する
+        self.model = model
+
+    def predict(self, x):
+        """ラベルが1である予測確率を算出する関数"""
+        pred_proba = self.model.predict_proba(x)
+
+        return pred_proba[:, 1]
+
+    def save_model(self):
+        """モデルを保存する関数"""
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
+        joblib.dump(self.model, model_path)
+
+    def load_model(self):
+        """モデルを読み込む関数"""
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
+        self.model = joblib.load(model_path)

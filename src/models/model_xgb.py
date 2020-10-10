@@ -60,5 +60,6 @@ class ModelXgb(AbsModel):
         joblib.dump(self.model, model_path)
 
     def load_model(self):
-        """モデルを作成する関数"""
-        pass
+        """モデルを読み込む関数"""
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
+        self.model = joblib.load(model_path)
