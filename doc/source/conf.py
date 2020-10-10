@@ -49,6 +49,10 @@ language = 'ja'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+# -- Extension settings ------------------------------------------------------
+
+# napoleon_include_private_with_doc = True
+
 
 # -- Options for HTML output -------------------------------------------------
 
