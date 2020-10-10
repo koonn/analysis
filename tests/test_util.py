@@ -1,5 +1,5 @@
 import pytest
-from src import Util
+from src_archived import Util
 
 
 def test_script_based_relative_path():

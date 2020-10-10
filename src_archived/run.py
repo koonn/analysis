@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 
-from src import ModelNN, ModelXGB, ModelLogisticRegression
-from src.util import Util
-from src import RunSettings
-from src import KaggleFeaturesRunner
+from src_archived import ModelNN, ModelXGB, ModelLogisticRegression
+from src_archived.util import Util
+from src_archived import RunSettings
+from src_archived import KaggleFeaturesRunner
 
 
 if __name__ == '__main__':
