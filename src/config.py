@@ -10,7 +10,7 @@ Attributes:
     TARGET_COLUMN(str): 目的変数のカラム名
 
 """
-from func_util import script_based_path
+from util import script_based_path
 
 # ----------------
 # モデルの保存先の設定
