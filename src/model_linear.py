@@ -18,7 +18,6 @@ class ModelLogisticRegression(AbsModel):
             scaler(Model): train後に学習済みスケーラーを保持. trainを実行するまでは、初期値のNoneをかえす.
 
     """
-
     def __init__(self, run_fold_name, params):
         super().__init__(run_fold_name, params)
         self.scaler = None

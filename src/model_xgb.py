@@ -54,6 +54,7 @@ class ModelXGB(AbsModel):
                                    evals=watchlist,
                                    early_stopping_rounds=early_stopping_rounds
                                    )
+
         else:
 
             # 学習を実行. watchlistは、学習中に評価指標を計算する対象のデータセット
