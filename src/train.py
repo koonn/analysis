@@ -20,6 +20,9 @@ def run(fold, model):
         foldは学習データのkfoldカラムの値を使用している
 
     """
+    # 実行(run)の名前を定義
+    run_name = f'{model}-{fold}'
+
     # 学習データの読み込み
     df = pd.read_csv(config.TRAINING_FOLD_FILE)
 
@@ -46,8 +49,8 @@ def run(fold, model):
     #print(f'Fold={fold}, Accuracy={accuracy}')
 
     # モデルの保存
+    clf.run_name = run_name
     clf.save_model()
-    # joblib.dump(clf, os.path.join(config.MODEL_OUTPUT_DIR, f'dt_{fold}.pkl'))
 
 
 if __name__ == '__main__':

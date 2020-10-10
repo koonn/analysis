@@ -21,11 +21,11 @@ from interface import AbsModel
 import config
 
 
-class ModelXgb(AbsModel, ABC):
+class ModelXgb(AbsModel):
     """XGBoostのモデルクラス
 
         Attributes:
-            # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+            run_name(str): 実行の名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
             model(Model): train後に学習済みモデルを保持. trainを実行するまでは、初期値のNoneをかえす.
 
@@ -39,24 +39,19 @@ class ModelXgb(AbsModel, ABC):
         # ハイパーパラメータの設定
         params = dict(self.params)
         num_round = params.pop('num_round')
+        early_stopping_rounds = params.pop('early_stopping_rounds')
 
         # 学習データ・バリデーションデータをDMatrix形式に変換
         d_train = xgb.DMatrix(train_x, label=train_y)
         d_valid = xgb.DMatrix(valid_x, label=valid_y)
-
-        early_stopping_rounds = params.pop('early_stopping_rounds')
-
-        # ハイパーパラメータの設定
-        params = dict(self.params)
-        num_round = params.pop('num_round')
 
         # 学習を実行. watchlistは、学習中に評価指標を計算する対象のデータセット
         watchlist = [(d_train, 'train'), (d_valid, 'eval')]
         self.model = xgb.train(params=params,
                                dtrain=d_train,
                                num_boost_round=num_round,
-                               early_stopping_rounds=early_stopping_rounds,
                                evals=watchlist,
+                               early_stopping_rounds=early_stopping_rounds,
                                verbose_eval=100,  # 何回のイテレーションごとに出力するか
                                )
 
@@ -68,7 +63,7 @@ class ModelXgb(AbsModel, ABC):
 
     def save_model(self):
         """モデルを保存する関数"""
-        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'xgb.pkl')
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
         joblib.dump(self.model, model_path)
 
     def load_model(self):
@@ -76,11 +71,11 @@ class ModelXgb(AbsModel, ABC):
         pass
 
 
-class ModelRandomForestClassifier(AbsModel, ABC):
+class ModelRandomForestClassifier(AbsModel):
     """RandomForestのモデルクラス
 
         Attributes:
-            # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+            run_name(str): 実行の名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
             model(Model): train後に学習済みモデルを保持. trainを実行するまでは、初期値のNoneをかえす.
 
@@ -106,7 +101,7 @@ class ModelRandomForestClassifier(AbsModel, ABC):
 
     def save_model(self):
         """モデルを保存する関数"""
-        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'rf.pkl')
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
         joblib.dump(self.model, model_path)
 
     def load_model(self):
@@ -114,11 +109,11 @@ class ModelRandomForestClassifier(AbsModel, ABC):
         pass
 
 
-class ModelDecisionTreeClassifier(AbsModel, ABC):
+class ModelDecisionTreeClassifier(AbsModel):
     """DecisionTreeのモデルクラス
 
         Attributes:
-            # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+            run_name(str): 実行の名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
             model(Model): train後に学習済みモデルを保持. trainを実行するまでは、初期値のNoneをかえす.
 
@@ -144,7 +139,7 @@ class ModelDecisionTreeClassifier(AbsModel, ABC):
 
     def save_model(self):
         """モデルを保存する関数"""
-        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'dt.pkl')
+        model_path = os.path.join(config.MODEL_OUTPUT_DIR, f'{self.run_name}.pkl')
         joblib.dump(self.model, model_path)
 
     def load_model(self):
@@ -152,11 +147,11 @@ class ModelDecisionTreeClassifier(AbsModel, ABC):
         pass
 
 
-class ModelLogisticRegression(AbsModel, ABC):
+class ModelLogisticRegression(AbsModel):
     """LogisticRegressionのモデルクラス
 
         Attributes:
-            # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+            run_name(str): 実行の名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
             model(Model): train後に学習済みモデルを保持. trainを実行するまでは、初期値のNoneをかえす.
             scaler(Model): train後に学習済みスケーラーを保持. trainを実行するまでは、初期値のNoneをかえす.
@@ -207,8 +202,8 @@ class ModelLogisticRegression(AbsModel, ABC):
         """モデルを保存する関数"""
         # パスの設定
         model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'lr')
-        model_path = os.path.join(model_dir, 'lr.pkl')
-        scaler_path = os.path.join(model_dir, 'scaler.pkl')
+        model_path = os.path.join(model_dir, f'{self.run_name}-model.pkl')
+        scaler_path = os.path.join(model_dir, f'{self.run_name}-scaler.pkl')
 
         # 保存先のディレクトリがなければ作成
         os.makedirs(model_dir, exist_ok=True)

@@ -17,7 +17,7 @@ class AbsModel(metaclass=ABCMeta):
     この抽象モデルを継承して各学習モデルを作成する
 
     Attributes:
-        # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+        run_name(str): 実行の名前とfoldの番号を組み合わせた名前
         params(dict): ハイパーパラメータ
         model(AbsModel): 初期値はNoneで、train後にモデルを保持するのに使う
 
@@ -26,11 +26,12 @@ class AbsModel(metaclass=ABCMeta):
         """コンストラクタ
 
         Args:
-            # run_fold_name(str): ランの名前とfoldの番号を組み合わせた名前
+            # run_name(str): 実行モデル名とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
 
         """
         self.params = params
+        self.run_name = None
         self.model = None
 
     @abstractmethod
