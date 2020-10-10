@@ -7,14 +7,18 @@ import model_dispatcher
 from metrics.metrics import acc
 
 
-def run(fold, model):
+def run(fold, model, save_model=True):
     """
 
     Args:
         fold(int): 使用するfold番号の指定
-        model: 使用するモデルの指定
+        model(str): 使用するモデルの指定
+        save_model(boolean): モデルを保存するかどうか
 
     Returns:
+        Model: モデルインスタンスを返す
+
+    Notes:
         foldは学習データのkfoldカラムの値を使用している
 
     """
@@ -47,8 +51,14 @@ def run(fold, model):
     print(f'Fold={fold}, Accuracy={accuracy:.5f}')
 
     # モデルの保存
-    clf.run_name = run_name
-    clf.save_model()
+    if save_model:
+        clf.run_name = run_name
+        clf.save_model()
+
+    return clf
+
+
+
 
 
 if __name__ == '__main__':
