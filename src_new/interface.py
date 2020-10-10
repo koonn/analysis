@@ -17,35 +17,34 @@ class AbsModel(metaclass=ABCMeta):
     この抽象モデルを継承して各学習モデルを作成する
 
     Attributes:
-        run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
+        # run_fold_name(str): 実行の名前とfoldの番号を組み合わせた名前
         params(dict): ハイパーパラメータ
         model(AbsModel): 初期値はNoneで、train後にモデルを保持するのに使う
 
     """
-    def __init__(self, run_fold_name, params):
+    def __init__(self, params):
         """コンストラクタ
 
         Args:
-            run_fold_name(str): ランの名前とfoldの番号を組み合わせた名前
+            # run_fold_name(str): ランの名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
 
         Returns:
             None
 
         """
-        self.run_fold_name = run_fold_name
         self.params = params
         self.model = None
 
     @abstractmethod
-    def train(self, train_x, train_y, valid_x, valid_y):
+    def fit(self, train_x, train_y):
         """モデルの学習を行い、学習済のモデルを保存する
 
         Args:
             train_x(pd.DataFrame): 学習データの特徴量
             train_y(pd.Series): 学習データの目的変数
-            valid_x(Optional[pd.DataFrame]): バリデーションデータの特徴量
-            valid_y(Optional[pd.Series]): バリデーションデータの目的変数
+            # valid_x(Optional[pd.DataFrame]): バリデーションデータの特徴量
+            # valid_y(Optional[pd.Series]): バリデーションデータの目的変数
 
         Returns:
             None
@@ -54,11 +53,11 @@ class AbsModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def predict(self, array_x):
+    def predict(self, x):
         """学習済のモデルでの予測値を返す
 
         Args:
-            array_x(pd.DataFrame): バリデーションデータやテストデータの特徴量
+            x(pd.DataFrame): バリデーションデータやテストデータの特徴量
 
         Returns:
             np.array: 予測値
