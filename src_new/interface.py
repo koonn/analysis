@@ -29,25 +29,19 @@ class AbsModel(metaclass=ABCMeta):
             # run_fold_name(str): ランの名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
 
-        Returns:
-            None
-
         """
         self.params = params
         self.model = None
 
     @abstractmethod
-    def fit(self, train_x, train_y):
+    def train(self, train_x, train_y, valid_x, valid_y):
         """モデルの学習を行い、学習済のモデルを保存する
 
         Args:
             train_x(pd.DataFrame): 学習データの特徴量
             train_y(pd.Series): 学習データの目的変数
-            # valid_x(Optional[pd.DataFrame]): バリデーションデータの特徴量
-            # valid_y(Optional[pd.Series]): バリデーションデータの目的変数
-
-        Returns:
-            None
+            valid_x(Optional[pd.DataFrame]): バリデーションデータの特徴量
+            valid_y(Optional[pd.Series]): バリデーションデータの目的変数
 
         """
         pass
@@ -70,22 +64,12 @@ class AbsModel(metaclass=ABCMeta):
 
     @abstractmethod
     def save_model(self):
-        """モデルの保存を行う
-
-        Returns:
-            None
-
-        """
+        """モデルの保存を行う"""
         pass
 
     @abstractmethod
     def load_model(self):
-        """モデルの読み込みを行う
-
-        Returns:
-            None
-
-        """
+        """モデルの読み込みを行う"""
         pass
 
 
