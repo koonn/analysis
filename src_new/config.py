@@ -17,10 +17,12 @@ from func_util import script_based_path
 # --------
 
 # 学習データファイル
-TRAINING_FILE = script_based_path('../data/features/train.csv')
+# TRAINING_FILE = script_based_path('../data/features/train.csv')
+TRAINING_FILE = script_based_path('../data/credit_card_data/train.csv')
 
 # CV用学習データファイル
-TRAINING_FOLD_FILE = script_based_path('../data/features/train_folds.csv')
+# TRAINING_FOLD_FILE = script_based_path('../data/features/train_folds.csv')
+TRAINING_FOLD_FILE = script_based_path('../data/credit_card_data/train_folds.csv')
 
 # モデルの保存先ディレクトリ
 MODEL_OUTPUT_DIR = script_based_path('../new_model/')
@@ -30,4 +32,5 @@ MODEL_OUTPUT_DIR = script_based_path('../new_model/')
 # ---------
 
 # targetカラムの名前
-TARGET_COLUMN = 'target'
+# TARGET_COLUMN = 'target'
+TARGET_COLUMN = 'Class'
