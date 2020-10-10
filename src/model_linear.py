@@ -62,7 +62,7 @@ class ModelLogisticRegression(AbsModel):
         self.scaler = scaler
 
     def predict(self, array_x):
-        """予測確率を行う関数
+        """予測確率を算出する関数
 
         Args:
             array_x(array-like shape of [n_samples, n_features]): 予測をしたい対象の特徴量

@@ -56,7 +56,6 @@ class ModelXGB(AbsModel):
                                    )
 
         else:
-
             # 学習を実行. watchlistは、学習中に評価指標を計算する対象のデータセット
             watchlist = [(d_train, 'train')]
             self.model = xgb.train(params,
