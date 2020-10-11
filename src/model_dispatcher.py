@@ -15,6 +15,7 @@ from models import (
     ModelDecisionTreeClassifier,
     ModelLogisticRegression,
     ModelLGB,
+    ModelAE,
     )
 
 
@@ -75,5 +76,8 @@ models = {
     ),
     'lightgbm': ModelLGB(
         params=params_lgb,
+    ),
+    'auto_encoder': ModelAE(
+        params={},
     )
 }
