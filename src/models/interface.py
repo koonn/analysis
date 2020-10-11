@@ -39,14 +39,14 @@ class AbsModel(metaclass=ABCMeta):
         self.model = None
 
     @abstractmethod
-    def train(self, train_x, train_y, valid_x, valid_y):
+    def train(self, x_train, y_train, x_valid, y_valid):
         """モデルの学習を行い、学習済のモデルを保存する
 
         Args:
-            train_x(pd.DataFrame): 学習データの特徴量
-            train_y(pd.Series): 学習データの目的変数
-            valid_x(Optional[pd.DataFrame]): バリデーションデータの特徴量
-            valid_y(Optional[pd.Series]): バリデーションデータの目的変数
+            x_train(pd.DataFrame): 学習データの特徴量
+            y_train(pd.Series): 学習データの目的変数
+            x_valid(Optional[pd.DataFrame]): バリデーションデータの特徴量
+            y_valid(Optional[pd.Series]): バリデーションデータの目的変数
 
         """
         pass
@@ -96,11 +96,11 @@ class BaseSklearnModel(AbsModel):
         super().__init__(params)
         self._model_class = None  # モデルインスタンスとは別なのでmodelとは別にしている
 
-    def train(self, train_x, train_y, valid_x=None, valid_y=None):
+    def train(self, x_train, y_train, x_valid=None, y_valid=None):
         """モデルの学習を行う関数"""
         # モデルの構築・訓練
         model = self._model_class(**self.params)
-        model.fit(train_x, train_y)
+        model.fit(x_train, y_train)
 
         # モデルを保持する
         self.model = model

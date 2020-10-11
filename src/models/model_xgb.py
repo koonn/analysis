@@ -13,7 +13,7 @@ import config
 from models.interface import AbsModel
 
 
-class ModelXgb(AbsModel):
+class ModelXGB(AbsModel):
     """XGBoostのモデルクラス
 
         Attributes:
@@ -30,7 +30,7 @@ class ModelXgb(AbsModel):
         """モデルの学習を行う関数"""
         # ハイパーパラメータの設定
         params = dict(self.params)
-        num_round = params.pop('num_round')
+        num_boost_round = params.pop('num_boost_round')
         early_stopping_rounds = params.pop('early_stopping_rounds')
 
         # 学習データ・バリデーションデータをDMatrix形式に変換
@@ -41,7 +41,7 @@ class ModelXgb(AbsModel):
         watchlist = [(d_train, 'train'), (d_valid, 'eval')]
         self.model = xgb.train(params=params,
                                dtrain=d_train,
-                               num_boost_round=num_round,
+                               num_boost_round=num_boost_round,
                                evals=watchlist,
                                early_stopping_rounds=early_stopping_rounds,
                                verbose_eval=100,  # 何回のイテレーションごとに出力するか
