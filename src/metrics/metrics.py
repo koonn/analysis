@@ -18,7 +18,7 @@ def auc(y_true, y_pred_proba):
         float: (ROCの)AUCの値
 
     """
-    return skm.auc(y_true, y_pred_proba)
+    return skm.roc_auc_score(y_true, y_pred_proba)
 
 
 def average_precision(y_true, y_pred_proba):
