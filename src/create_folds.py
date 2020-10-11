@@ -24,7 +24,7 @@ def create_folds(n_folds=5):
     # k分割考査検証法で分割するためのインスタンス作成
     k_fold = StratifiedKFold(n_splits=n_folds,
                              shuffle=True,
-                             random_state=2020,
+                             random_state=config.RANDOM_SEED,
                              )
 
     # dfにfold番号のカラムを追加する
@@ -36,4 +36,4 @@ def create_folds(n_folds=5):
 
 
 if __name__ == '__main__':
-    create_folds()
+    create_folds(n_folds=config.N_FOLDS)

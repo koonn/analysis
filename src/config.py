@@ -34,3 +34,13 @@ TRAINING_FOLD_FILE = script_based_path('../data/credit_card_data/train_folds.csv
 # targetカラムの名前
 # TARGET_COLUMN = 'target'
 TARGET_COLUMN = 'Class'
+
+# --------
+# 環境の設定
+# --------
+
+# Seed値の設定
+RANDOM_SEED = 2020
+
+# k分割交差検証のkの数
+N_FOLDS = 5

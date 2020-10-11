@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 import argparse
 import pandas as pd
+import numpy as np
 
 import config
 import model_dispatcher
 from metrics.metrics import acc
 
 
-def run(fold, model, save_model=True):
+def run(fold, model_name, save_model=True):
     """
 
     Args:
         fold(int): 使用するfold番号の指定
-        model(str): 使用するモデルの指定
+        model_name(str): 使用するモデルの指定
         save_model(boolean): モデルを保存するかどうか
 
     Returns:
@@ -23,14 +24,14 @@ def run(fold, model, save_model=True):
 
     """
     # 実行(run)の名前を定義
-    run_name = f'{model}-{fold}'
+    run_name = f'{model_name}-{fold}'
 
     # 学習データの読み込み
     df = pd.read_csv(config.TRAINING_FOLD_FILE)
 
     # 学習データとバリデーションデータに分割して、k_foldカラムを除く
-    df_train = df[df.kfold != fold].reset_index(drop=True).drop('kfold', axis=1)
-    df_valid = df[df.kfold == fold].reset_index(drop=True).drop('kfold', axis=1)
+    df_train = df[df.kfold != fold].drop('kfold', axis=1)
+    df_valid = df[df.kfold == fold].drop('kfold', axis=1)
 
     # 学習データとバリデーションデータをそれぞれ目的変数と説明変数に分ける
     x_train = df_train.drop(config.TARGET_COLUMN, axis=1)
@@ -40,10 +41,11 @@ def run(fold, model, save_model=True):
     y_valid = df_valid[config.TARGET_COLUMN]
 
     # モデルの作成
-    clf = model_dispatcher.models[model]
+    clf = model_dispatcher.models[model_name]
     clf.train(x_train, y_train, x_valid, y_valid)
 
-    # バリデーションデータに対する予測
+    # バリデーションデータのindexと、それに対する予測
+    index_valid = y_valid.index
     pred_valid = clf.predict(x_valid)
 
     # 指標の計算
@@ -55,10 +57,43 @@ def run(fold, model, save_model=True):
         clf.run_name = run_name
         clf.save_model()
 
-    return clf
+    return clf, index_valid, pred_valid
 
 
+def run_cv(model_name, save_model=True):
+    """
 
+    Args:
+        model_name(str): 使用するモデルの指定
+        save_model(boolean): モデルを保存するかどうか
+
+    Returns:
+        Model: モデルインスタンスを返す
+
+    Notes:
+        foldは学習データのkfoldカラムの値を使用している
+
+    """
+    # データの保存先
+    indexes_cv = []
+    predictions_cv = []
+
+    for i_fold in range(config.N_FOLDS):
+
+        # モデルの学習を実行
+        model, index_valid, pred_valid = run(i_fold, model_name, save_model=save_model)
+
+        # fold毎の結果を保持する
+        indexes_cv.append(index_valid)  # バリデーションのデータのインデックス
+        predictions_cv.append(pred_valid)  # バリデーションに対する予測値
+
+    # 全foldの結果をまとめる
+    indexes_cv = np.concatenate(indexes_cv)  # 全てのindexが入ったnp.arrayを作成
+    order = np.argsort(indexes_cv)  # valid_indexをソートするためのindexが入ったnp.arrayを作成
+    predictions_cv = np.concatenate(predictions_cv, axis=0)  # バリデーション予測結果が入ったnp.arrayを作成
+    predictions_cv = predictions_cv[order]  # もともとのindexの昇順に、バリデーション予測結果を並べる
+
+    return model, indexes_cv, predictions_cv
 
 
 if __name__ == '__main__':
@@ -71,7 +106,7 @@ if __name__ == '__main__':
         type=int,
     )
     parser.add_argument(
-        '--model',
+        '--model_name',
         type=str,
     )
 
@@ -79,6 +114,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # 学習の実行
-    run(fold=args.fold,
-        model=args.model,
-        )
+    # run(fold=args.fold, model_name=args.model_name)
+    run_cv(model_name=args.model_name)
