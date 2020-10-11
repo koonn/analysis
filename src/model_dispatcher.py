@@ -8,11 +8,13 @@ Attributes：
     models(dict): モデル名をkey、モデルインスタンスをvalueとした辞書
 
 """
+import config
 from models import (
-    ModelXgb,
+    ModelXGB,
     ModelRandomForestClassifier,
     ModelDecisionTreeClassifier,
     ModelLogisticRegression,
+    ModelLGB,
     )
 
 
@@ -27,9 +29,30 @@ params_xgb = {
     'subsample': 0.9,
     'colsample_bytree': 0.8,
     'silent': 1,
-    'random_state': 71,
-    'num_round': 200,  # 10000
+    'random_state': config.RANDOM_SEED,
+    'num_boost_round': 200,  # 10000
     'early_stopping_rounds': 10,
+}
+
+# LightGBMのハイパーパラメータ設定
+params_lgb = {
+    'task': 'train',
+    'num_class': 1,
+    'boosting': 'gbdt',
+    'objective': 'binary',
+    'metric': 'binary_logloss',
+    'metric_freq': 50,
+    'is_training_metric': False,
+    'max_depth': 4,
+    'num_leaves': 31,
+    'learning_rate': 0.01,
+    'feature_fraction': 1.0,
+    'bagging_fraction': 1.0,
+    'bagging_freq': 0,
+    'bagging_seed': config.RANDOM_SEED,
+    'verbose': 0,
+    'num_boost_round': 1000,  # 20000
+    'early_stopping_rounds': 200,
 }
 
 # モデルディスパッチャ
@@ -47,7 +70,10 @@ models = {
     'random_forest': ModelRandomForestClassifier(
         params={'n_jobs': -2},
     ),
-    'xgboost': ModelXgb(
+    'xgboost': ModelXGB(
         params=params_xgb,
     ),
+    'lightgbm': ModelLGB(
+        params=params_lgb,
+    )
 }
