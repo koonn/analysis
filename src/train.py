@@ -5,16 +5,18 @@ import numpy as np
 
 import config
 import model_dispatcher
-from metrics.metrics import acc
+from metrics.metrics import acc, auc, precision, recall
 
 
-def run(fold, model_name, save_model=True):
-    """
+def train_fold(fold, model_name, save_model=True, df=None):
+    """foldごとの訓練を行うコア関数
 
     Args:
         fold(int): 使用するfold番号の指定
         model_name(str): 使用するモデルの指定
         save_model(boolean): モデルを保存するかどうか
+        df(pd.DataFrame): 訓練用のデータ. バリデーション用の番号のカラムkfoldが入っている状態のもの.デフォルトはdf=Noneで、指定しなければ、
+                          configで指定された訓練用データを読み込む(config.)
 
     Returns:
         Model: モデルインスタンスを返す
@@ -26,8 +28,9 @@ def run(fold, model_name, save_model=True):
     # 実行(run)の名前を定義
     run_name = f'{model_name}-{fold}'
 
-    # 学習データの読み込み
-    df = pd.read_csv(config.TRAINING_FOLD_FILE)
+    # 学習データが指定されていない場合は学習データを読み込む
+    if df is None:
+        df = pd.read_csv(config.TRAINING_FOLD_FILE)
 
     # 学習データとバリデーションデータに分割して、k_foldカラムを除く
     df_train = df[df.kfold != fold].drop('kfold', axis=1)
@@ -49,8 +52,13 @@ def run(fold, model_name, save_model=True):
     pred_valid = clf.predict(x_valid)
 
     # 指標の計算
-    accuracy = acc(y_valid, pred_valid)
-    print(f'Fold={fold}, Accuracy={accuracy:.5f}')
+    print(f'Model Name: {model_name}, Fold: {fold} ',
+          f'\n Validation Result:',
+          f'\n      AUC={auc(y_valid, pred_valid):.5f}',
+          f'\n      Accuracy={acc(y_valid, pred_valid):.5f}',
+          f'\n      Precision={precision(y_valid, pred_valid):.5f}',
+          f'\n      Recall={recall(y_valid, pred_valid):.5f}',
+          )
 
     # モデルの保存
     if save_model:
@@ -60,7 +68,7 @@ def run(fold, model_name, save_model=True):
     return clf, index_valid, pred_valid
 
 
-def run_cv(model_name, save_model=True):
+def run_train_cv(model_name, save_model=True):
     """
 
     Args:
@@ -74,6 +82,9 @@ def run_cv(model_name, save_model=True):
         foldは学習データのkfoldカラムの値を使用している
 
     """
+    # 学習データの読み込み
+    df = pd.read_csv(config.TRAINING_FOLD_FILE)
+
     # データの保存先
     indexes_cv = []
     predictions_cv = []
@@ -81,7 +92,7 @@ def run_cv(model_name, save_model=True):
     for i_fold in range(config.N_FOLDS):
 
         # モデルの学習を実行
-        model, index_valid, pred_valid = run(i_fold, model_name, save_model=save_model)
+        model, index_valid, pred_valid = train_fold(i_fold, model_name, df=df, save_model=save_model)
 
         # fold毎の結果を保持する
         indexes_cv.append(index_valid)  # バリデーションのデータのインデックス
@@ -92,6 +103,17 @@ def run_cv(model_name, save_model=True):
     order = np.argsort(indexes_cv)  # valid_indexをソートするためのindexが入ったnp.arrayを作成
     predictions_cv = np.concatenate(predictions_cv, axis=0)  # バリデーション予測結果が入ったnp.arrayを作成
     predictions_cv = predictions_cv[order]  # もともとのindexの昇順に、バリデーション予測結果を並べる
+
+    # 指標の計算
+    y_true = df[config.TARGET_COLUMN].values
+
+    print(f'Model Name: {model_name}',
+          f'\n All Validation Result:',
+          f'\n      AUC={auc(y_true, predictions_cv):.5f}',
+          f'\n      Accuracy={acc(y_true, predictions_cv):.5f}',
+          f'\n      Precision={precision(y_true, predictions_cv):.5f}',
+          f'\n      Recall={recall(y_true, predictions_cv):.5f}',
+          )
 
     return model, indexes_cv, predictions_cv
 
@@ -114,5 +136,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # 学習の実行
-    # run(fold=args.fold, model_name=args.model_name)
-    run_cv(model_name=args.model_name)
+    # train_fold(fold=args.fold, model_name=args.model_name)
+    run_train_cv(model_name=args.model_name)
