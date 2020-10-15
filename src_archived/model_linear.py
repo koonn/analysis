@@ -18,7 +18,6 @@ class ModelLogisticRegression(AbsModel):
             scaler(Model): train後に学習済みスケーラーを保持. trainを実行するまでは、初期値のNoneをかえす.
 
     """
-
     def __init__(self, run_fold_name, params):
         super().__init__(run_fold_name, params)
         self.scaler = None
@@ -63,7 +62,7 @@ class ModelLogisticRegression(AbsModel):
         self.scaler = scaler
 
     def predict(self, array_x):
-        """予測確率を行う関数
+        """予測確率を算出する関数
 
         Args:
             array_x(array-like shape of [n_samples, n_features]): 予測をしたい対象の特徴量
@@ -87,7 +86,7 @@ class ModelLogisticRegression(AbsModel):
             - かつ、インスタンス変数で持つなどするか検討
         """
         # モデルの保存先の指定と、ディレクトリの準備
-        model_dir = Util.script_based_path('../model/model/lr')
+        model_dir = Util.script_based_path('../model_archived/model/lr')
 
         model_path = os.path.join(model_dir, f'{self.run_fold_name}.pkl')
         scaler_path = os.path.join(model_dir, f'{self.run_fold_name}-scaler.pkl')
@@ -99,7 +98,7 @@ class ModelLogisticRegression(AbsModel):
         Util.dump(self.scaler, scaler_path)
 
     def load_model(self, model_dir):
-        model_dir = Util.script_based_path('../model/model/lr')
+        model_dir = Util.script_based_path('../model_archived/model/lr')
 
         model_path = os.path.join(model_dir, f'{self.run_fold_name}.pkl')
         scaler_path = os.path.join(model_dir, f'{self.run_fold_name}-scaler.pkl')
