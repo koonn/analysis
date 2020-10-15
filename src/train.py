@@ -136,5 +136,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # 学習の実行
-    # train_fold(fold=args.fold, model_name=args.model_name)
-    run_train_cv(model_name=args.model_name)
+    train_fold(fold=args.fold, model_name=args.model_name)
+    # run_train_cv(model_name=args.model_name)
