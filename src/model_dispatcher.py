@@ -16,6 +16,7 @@ from models import (
     ModelLogisticRegression,
     ModelLGB,
     ModelAE,
+    ModelSVM,
     )
 
 
@@ -79,5 +80,12 @@ models = {
     ),
     'auto_encoder': ModelAE(
         params={},
-    )
+    ),
+    'svm_rbf': ModelSVM(
+        params={'C': 1.0,
+                'kernel': 'linear',
+                'probability': True,
+                'max_iter': 10,
+                },
+    ),
 }
