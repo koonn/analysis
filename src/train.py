@@ -68,12 +68,13 @@ def train_fold(fold, model_name, save_model=True, df=None):
     return clf, index_valid, pred_valid
 
 
-def run_train_cv(model_name, save_model=True):
+def run_train_cv(model_name, save_model=True, validate_with_test=True):
     """
 
     Args:
         model_name(str): 使用するモデルの指定
-        save_model(boolean): モデルを保存するかどうか
+        save_model(boolean): モデルを保存するかどうか. デフォルトはTrue
+        validate_with_test(boolean): テストデータを使ってバリデーションするかどうか. デフォルトはTrue
 
     Returns:
         Model: モデルインスタンスを返す
@@ -104,7 +105,7 @@ def run_train_cv(model_name, save_model=True):
     predictions_cv = np.concatenate(predictions_cv, axis=0)  # バリデーション予測結果が入ったnp.arrayを作成
     predictions_cv = predictions_cv[order]  # もともとのindexの昇順に、バリデーション予測結果を並べる
 
-    # 指標の計算
+    # バリデーションでの指標の計算
     y_true = df[config.TARGET_COLUMN].values
 
     print(f'Model Name: {model_name}',
@@ -113,6 +114,26 @@ def run_train_cv(model_name, save_model=True):
           f'\n      Accuracy={acc(y_true, predictions_cv):.5f}',
           f'\n      Precision={precision(y_true, predictions_cv):.5f}',
           f'\n      Recall={recall(y_true, predictions_cv):.5f}',
+          )
+
+    # テストデータでの指標の計算
+    if validate_with_test:
+        # テストデータの読み込み
+        df_test = pd.read_csv(config.TEST_FILE)
+
+        # テストデータをそれぞれ目的変数と説明変数に分ける
+        x_test = df_test.drop(config.TARGET_COLUMN, axis=1)
+        y_test_true = df_test[config.TARGET_COLUMN]
+
+        # テストデータに対する予測を作成
+        y_test_pred = model.predict(x_test)
+
+    print(f'Model Name: {model_name}',
+          f'\n Test Result:',
+          f'\n      AUC={auc(y_test_true, y_test_pred):.5f}',
+          f'\n      Accuracy={acc(y_test_true, y_test_pred):.5f}',
+          f'\n      Precision={precision(y_test_true, y_test_pred):.5f}',
+          f'\n      Recall={recall(y_test_true, y_test_pred):.5f}',
           )
 
     return model, indexes_cv, predictions_cv
@@ -136,5 +157,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # 学習の実行
-    train_fold(fold=args.fold, model_name=args.model_name)
-    # run_train_cv(model_name=args.model_name)
+    # train_fold(fold=args.fold, model_name=args.model_name)
+    run_train_cv(model_name=args.model_name)

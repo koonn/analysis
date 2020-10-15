@@ -31,6 +31,9 @@ TRAINING_FILE = script_based_path('../data/credit_card_data/train.csv')
 # TRAINING_FOLD_FILE = script_based_path('../data/features/train_folds.csv')
 TRAINING_FOLD_FILE = script_based_path('../data/credit_card_data/train_folds.csv')
 
+# テストデータファイル
+TEST_FILE = script_based_path('../data/credit_card_data/test.csv')
+
 # targetカラムの名前
 # TARGET_COLUMN = 'target'
 TARGET_COLUMN = 'Class'
