@@ -96,7 +96,7 @@ class ModelSVM(BaseSklearnModel):
         """モデルを保存する関数"""
         # パスの設定
         model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'svm')
-        model_path = os.path.join(model_dir, f'{self.run_name}-model_archived.pkl')
+        model_path = os.path.join(model_dir, f'{self.run_name}-model.pkl')
         scaler_path = os.path.join(model_dir, f'{self.run_name}-scaler.pkl')
         kernel_mapper_path = os.path.join(model_dir, f'{self.run_name}-kernel_mapper.pkl')
 
@@ -111,7 +111,7 @@ class ModelSVM(BaseSklearnModel):
     def load_model(self):
         """モデルを読み込む関数"""
         model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'svm')
-        model_path = os.path.join(model_dir, f'{self.run_name}-model_archived.pkl')
+        model_path = os.path.join(model_dir, f'{self.run_name}-model.pkl')
         scaler_path = os.path.join(model_dir, f'{self.run_name}-scaler.pkl')
         kernel_mapper_path = os.path.join(model_dir, f'{self.run_name}-kernel_mapper.pkl')
 

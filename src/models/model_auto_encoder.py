@@ -20,7 +20,7 @@ from keras.losses import mse, binary_crossentropy
 
 import config
 from models.interface import AbsModel
-from models.util import anomary_scores
+from models.util import anomary_scores_ae
 
 
 class ModelAE(AbsModel):
@@ -81,7 +81,7 @@ class ModelAE(AbsModel):
     def predict(self, x):
         """0ー1の範囲の異常度の算出を行う関数"""
         x_reduced = self.model.predict(x, verbose=1)
-        anomary_score_ae = anomary_scores(x, x_reduced)
+        anomary_score_ae = anomary_scores_ae(x, x_reduced)
 
         return anomary_score_ae
 
