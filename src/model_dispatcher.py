@@ -19,6 +19,9 @@ from models import (
     ModelSVM,
     ModelBernoulliNB,
     ModelGaussianNB,
+    ModelOCSVM,
+    ModelLOF,
+    ModelIsolationForest,
     )
 
 
@@ -93,7 +96,25 @@ models = {
     'bernoulli_nb': ModelBernoulliNB(
         params={},
     ),
-    'gaussian_nb': ModelBernoulliNB(
+    'gaussian_nb': ModelGaussianNB(
         params={}
+    ),
+    'ocsvm_rbf': ModelOCSVM(
+        params={
+            'kernel': 'rbf',
+            # 'gamma': 0.01,  # もともとのpredictを使わないため、gammaは指定しても使われない
+            'coef0': 1.0,
+            'degree': 1,
+        },
+    ),
+    'lof': ModelLOF(
+        params={
+            'n_jobs': -2,
+        }
+    ),
+    'isolation_forest': ModelIsolationForest(
+        params={
+            'n_jobs': -2,
+        }
     ),
 }
