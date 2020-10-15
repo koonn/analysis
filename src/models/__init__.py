@@ -5,3 +5,4 @@ from .model_xgb import ModelXGB
 from .model_lgb import ModelLGB
 from .model_ae import ModelAE
 from .model_svm import ModelSVM
+from .model_nb import ModelBernoulliNB, ModelGaussianNB

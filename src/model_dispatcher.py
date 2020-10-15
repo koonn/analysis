@@ -17,6 +17,8 @@ from models import (
     ModelLGB,
     ModelAE,
     ModelSVM,
+    ModelBernoulliNB,
+    ModelGaussianNB,
     )
 
 
@@ -87,5 +89,11 @@ models = {
                 'probability': True,
                 'max_iter': 10,
                 },
+    ),
+    'bernoulli_nb': ModelBernoulliNB(
+        params={},
+    ),
+    'gaussian_nb': ModelBernoulliNB(
+        params={}
     ),
 }
