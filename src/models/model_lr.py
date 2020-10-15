@@ -25,15 +25,17 @@ class ModelLogisticRegression(AbsModel):
         Attributes:
             run_name(str): 実行の名前とfoldの番号を組み合わせた名前
             params(dict): ハイパーパラメータ
+            features_to_scale(Optional[List[str]]): スケール対象の特徴量を指定する
             model(Model): train後に学習済みモデルを保持. trainを実行するまでは、初期値のNoneをかえす.
             scaler(Model): train後に学習済みスケーラーを保持. trainを実行するまでは、初期値のNoneをかえす.
 
     """
-    def __init__(self, params):
+    def __init__(self, params, features_to_scale=None):
         super().__init__(params)
+        self.features_to_scale = features_to_scale
         self.scaler = None
 
-    def train(self, train_x, train_y, valid_x=None, valid_y=None, features_to_scale=None):
+    def train(self, train_x, train_y, valid_x=None, valid_y=None):
         """モデルの学習を行う関数
 
         Args:
@@ -41,20 +43,19 @@ class ModelLogisticRegression(AbsModel):
             train_y(1-D array-like shape of [n_samples]): 学習データのラベル配列
             valid_x(array-like shape of [n_samples, n_features]): バリデーションデータの特徴量
             valid_y(1-D array-like shape of [n_samples]): バリデーションデータのラベル配列
-            features_to_scale(Optional[List[str]]): スケール対象の特徴量を指定する
 
         """
         # データのスケーリング
         # スケールするカラムを指定
-        if features_to_scale is None:
-            features_to_scale = train_x.columns
+        if self.features_to_scale is None:
+            self.features_to_scale = train_x.columns
 
         # スケーラを作成
         scaler = StandardScaler()
-        scaler.fit(train_x[features_to_scale])
+        scaler.fit(train_x[self.features_to_scale])
 
         # スケーリングを実行
-        train_x.loc[:, features_to_scale] = scaler.transform(train_x[features_to_scale])
+        train_x.loc[:, self.features_to_scale] = scaler.transform(train_x[self.features_to_scale])
 
         # モデルの構築・学習
         model = LogisticRegression(**self.params)
@@ -66,7 +67,14 @@ class ModelLogisticRegression(AbsModel):
 
     def predict(self, x):
         """ラベルが1である予測確率を算出する関数"""
-        x = self.scaler.transform(x)
+        # スケールするカラムを指定
+        if self.features_to_scale is None:
+            self.features_to_scale = x.columns
+
+        # xの前処理の変換
+        x.loc[:, self.features_to_scale] = self.scaler.transform(x[self.features_to_scale])
+
+        # 予測確率の算出
         pred = self.model.predict_proba(x)
 
         return pred[:, 1]
