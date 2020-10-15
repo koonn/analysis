@@ -22,6 +22,7 @@ from models import (
     ModelOCSVM,
     ModelLOF,
     ModelIsolationForest,
+    ModelMixedNB,
     )
 
 
@@ -98,6 +99,10 @@ models = {
     ),
     'gaussian_nb': ModelGaussianNB(
         params={}
+    ),
+    'mixed_nb': ModelMixedNB(
+        params={},
+        features_to_scale=['Time'],
     ),
     'ocsvm_rbf': ModelOCSVM(
         params={

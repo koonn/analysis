@@ -5,5 +5,5 @@ from .model_xgb import ModelXGB
 from .model_lgb import ModelLGB
 from .model_auto_encoder import ModelAE
 from .model_svm import ModelSVM
-from .model_naive_bayes import ModelBernoulliNB, ModelGaussianNB
+from .model_naive_bayes import ModelBernoulliNB, ModelGaussianNB, ModelMixedNB
 from .model_anomary_detection import ModelOCSVM, ModelLOF, ModelIsolationForest
