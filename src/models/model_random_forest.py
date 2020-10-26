@@ -4,8 +4,9 @@
 Absモデルを継承したモデルを作成する
 
 """
+# モデル
 from sklearn.ensemble import RandomForestClassifier
-from models.interface import BaseSklearnModel
+from .interface import BaseSklearnModel
 
 
 class ModelRandomForestClassifier(BaseSklearnModel):

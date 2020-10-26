@@ -8,9 +8,11 @@ TODO:
     - 死ぬほど遅くなるのと精度が全然出てないのでハイパラ調整(特にmax_iter)
 
 """
+# util
 import os
 import joblib
 
+# モデル
 from sklearn.svm import SVC
 from sklearn.kernel_approximation import Nystroem
 from sklearn.preprocessing import StandardScaler

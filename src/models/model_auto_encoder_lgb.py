@@ -4,25 +4,19 @@
 Absモデルを継承したモデルを作成する
 
 """
-import os
-import joblib
-
+# util
 import pandas as pd
-
-import lightgbm as lgb
-
-import tensorflow as tf
-import keras
-from keras import backend as K
-from keras.models import Sequential, Model
-from keras.layers import Activation, Dense, Dropout
-from keras.layers import BatchNormalization, Input, Lambda
-from keras import regularizers
-from keras.losses import mse, binary_crossentropy
-
-import config
-from models.interface import AbsModel
 from models.util import anomary_scores_ae
+
+# モデル
+import lightgbm as lgb
+import keras
+from keras.models import Sequential, Model
+from keras.layers import Dense, Dropout
+from keras import regularizers
+
+# 設定
+from .interface import AbsModel
 
 
 class ModelAELightGBM(AbsModel):
@@ -143,6 +137,7 @@ class ModelAELightGBM(AbsModel):
 
     def save_model(self):
         """モデルを保存する関数"""
+        pass
 
 
     def load_model(self):

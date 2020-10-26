@@ -8,14 +8,17 @@ TODO:
     - ModelMixedNBクラスを実装する
 
 """
+# util
 import os
 import joblib
 
+# モデル
 from sklearn.naive_bayes import BernoulliNB, GaussianNB
 from sklearn.preprocessing import StandardScaler
 
+# 設定
 import config
-from models.interface import AbsModel, BaseSklearnModel
+from .interface import AbsModel, BaseSklearnModel
 
 
 class ModelBernoulliNB(BaseSklearnModel):

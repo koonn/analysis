@@ -7,14 +7,17 @@ TODO:
     - BaseScaledSklearnModelみたいなクラスを作成する(コードを共通化出来そうなため)
 
 """
+# util
 import os
 import joblib
 
+# モデル
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
+# 設定
 import config
-from models.interface import AbsModel
+from .interface import AbsModel
 
 
 class ModelLogisticRegression(AbsModel):

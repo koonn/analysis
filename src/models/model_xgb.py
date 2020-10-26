@@ -4,11 +4,14 @@
 Absモデルを継承したモデルを作成する
 
 """
+# util
 import os
-
 import joblib
+
+# モデル
 import xgboost as xgb
 
+# 設定
 import config
 from models.interface import AbsModel
 

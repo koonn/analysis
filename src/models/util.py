@@ -1,6 +1,7 @@
 """モデルないで共通して使う関数
 
 """
+# util
 import numpy as np
 import pandas as pd
 

@@ -4,13 +4,16 @@
 Absモデルを継承したモデルを作成する
 
 """
+# util
 import os
-
 import joblib
+
+# モデル
 import lightgbm as lgb
 
+# 設定
 import config
-from models.interface import AbsModel
+from .interface import AbsModel
 
 
 class ModelLGB(AbsModel):

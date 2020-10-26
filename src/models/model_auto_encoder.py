@@ -4,23 +4,19 @@
 Absモデルを継承したモデルを作成する
 
 """
+# util
 import os
-import joblib
-
-import lightgbm as lgb
-
-import tensorflow as tf
-import keras
-from keras import backend as K
-from keras.models import Sequential, Model
-from keras.layers import Activation, Dense, Dropout
-from keras.layers import BatchNormalization, Input, Lambda
-from keras import regularizers
-from keras.losses import mse, binary_crossentropy
-
-import config
-from models.interface import AbsModel
 from models.util import anomary_scores_ae
+
+# モデル
+import keras
+from keras.models import Sequential, Model
+from keras.layers import Dense, Dropout
+from keras import regularizers
+
+# 設定
+import config
+from .interface import AbsModel
 
 
 class ModelAE(AbsModel):
