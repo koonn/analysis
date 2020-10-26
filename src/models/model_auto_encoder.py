@@ -87,7 +87,9 @@ class ModelAE(AbsModel):
 
     def save_model(self):
         """モデルを保存する関数"""
-        pass
+        model_dir = os.path.join(config.MODEL_OUTPUT_DIR, 'ae')
+        model_path = os.path.join(model_dir, f'{self.run_name}')
+        self.model.save(model_path, save_format='tf')
 
     def load_model(self):
         """モデルを読み込む関数"""
