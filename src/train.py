@@ -44,12 +44,12 @@ def train_fold(fold, model_name, save_model=True, df=None):
     y_valid = df_valid[config.TARGET_COLUMN]
 
     # モデルの作成
-    clf = model_dispatcher.models[model_name]
-    clf.train(x_train, y_train, x_valid, y_valid)
+    model = model_dispatcher.models[model_name]
+    model.train(x_train, y_train, x_valid, y_valid)
 
     # バリデーションデータのindexと、それに対する予測
     index_valid = y_valid.index
-    pred_valid = clf.predict(x_valid)
+    pred_valid = model.predict(x_valid)
 
     # 指標の計算
     print(f'Model Name: {model_name}, Fold: {fold} ',
@@ -62,10 +62,10 @@ def train_fold(fold, model_name, save_model=True, df=None):
 
     # モデルの保存
     if save_model:
-        clf.run_name = run_name
-        clf.save_model()
+        model.run_name = run_name
+        model.save_model()
 
-    return clf, index_valid, pred_valid
+    return model, index_valid, pred_valid
 
 
 def run_train_cv(model_name, save_model=True, validate_with_test=True):
@@ -128,13 +128,13 @@ def run_train_cv(model_name, save_model=True, validate_with_test=True):
         # テストデータに対する予測を作成
         y_test_pred = model.predict(x_test)
 
-    print(f'Model Name: {model_name}',
-          f'\n Test Result:',
-          f'\n      AUC={auc(y_test_true, y_test_pred):.5f}',
-          f'\n      Accuracy={acc(y_test_true, y_test_pred):.5f}',
-          f'\n      Precision={precision(y_test_true, y_test_pred):.5f}',
-          f'\n      Recall={recall(y_test_true, y_test_pred):.5f}',
-          )
+        print(f'Model Name: {model_name}',
+              f'\n Test Result:',
+              f'\n      AUC={auc(y_test_true, y_test_pred):.5f}',
+              f'\n      Accuracy={acc(y_test_true, y_test_pred):.5f}',
+              f'\n      Precision={precision(y_test_true, y_test_pred):.5f}',
+              f'\n      Recall={recall(y_test_true, y_test_pred):.5f}',
+              )
 
     return model, indexes_cv, predictions_cv
 
