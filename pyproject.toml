@@ -15,6 +15,7 @@ lightgbm = "^3.0.0"
 keras = "^2.4.3"
 matplotlib = "^3.3.2"
 ipywidgets = "^7.5.1"
+seaborn = "^0.11.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.0"
